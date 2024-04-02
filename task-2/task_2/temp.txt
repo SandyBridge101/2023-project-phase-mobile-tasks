@@ -1,0 +1,44 @@
+  //add task 1
+  manager.addTask('Check progress sheet',
+      'They have probably added five more problems', '05/04/2024', false);
+  //add task 2
+  manager.addTask('Upsolve Contest problems',
+      'You did not solve one problem last saturday', '07/04/2024', false);
+  //add task 3
+  manager.addTask('Update your Info',
+      'Update your info on the tech track info sheet', '05/04/2024', false);
+  //add task 4
+  manager.addTask('Create a new repo',
+      'The repo is used to upload your latest task', '05/04/2024', false);
+  //add task 5
+  manager.addTask('Join the accent reduction evaluation meeting',
+      'Andy is evaluating his students', '05/04/2024', false);
+  print('View all tasks\n');
+  manager.viewAll();
+  print('\n');
+  print('View pending tasks\n');
+  manager.viewPending();
+  print('\n');
+  print('View complete Tasks\n');
+  manager.viewComplete();
+  print('edit status of the third task.....\n');
+  manager.editTaskStatus(2, true);
+  print('edit date of the fourth task.....\n');
+  manager.editTaskDate(3, '01/03/2027');
+  print('edit the description of the fifth task.....\n');
+  manager.editTaskDescription(4, 'meeting is over');
+  print('edit the title of the first task.....\n');
+  manager.editTaskTitle(0, 'Solve new problems');
+  print('edit status of the second task.....\n');
+  manager.editTaskStatus(1, true);
+  print('\n');
+  print('View pending tasks\n');
+  manager.viewPending();
+  print('\n');
+  print('View complete Tasks\n');
+  manager.viewComplete();
+  print('delete the fourth task.....\n');
+  manager.deleteTask(3);
+  print('\n');
+  print('View all Tasks once more....\n');
+  manager.viewAll();
