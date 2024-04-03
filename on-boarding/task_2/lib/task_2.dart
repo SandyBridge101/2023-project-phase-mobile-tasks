@@ -1,116 +1,116 @@
 import 'dart:io';
 
 class Task {
-  String title = "";
-  String description = "";
-  String date = "";
-  bool status = false;
+  String _title = "";
+  String _description = "";
+  String _date = "";
+  bool _status = false;
 
   Task(String title, String description, String date, bool status) {
-    this.title = title;
-    this.description = description;
-    this.date = date;
-    this.status = status;
+    this._title = title;
+    this._description = description;
+    this._date = date;
+    this._status = status;
   }
 
   void display() {
-    print('Title:   ' + this.title);
-    print('Description:   ' + this.description);
-    print('Due date:   ' + this.date);
+    print('Title:   ' + this._title);
+    print('Description:   ' + this._description);
+    print('Due date:   ' + this._date);
     //print('Status:   '+this.status);
   }
 
   void setTitle(String title) {
-    this.title = title;
+    this._title = title;
   }
 
   void setDescription(String description) {
-    this.description = description;
+    this._description = description;
   }
 
   void setDate(String due_date) {
-    this.date = due_date;
+    this._date = due_date;
   }
 
   void setStatus(bool status) {
-    this.status = status;
+    this._status = status;
   }
 
   String getTitle() {
-    return this.title;
+    return this._title;
   }
 
   String getDescription() {
-    return this.description;
+    return this._description;
   }
 
   String getDate() {
-    return this.date;
+    return this._date;
   }
 
   bool getStatus() {
-    return this.status;
+    return this._status;
   }
 }
 
 class TaskManager {
-  List tasks = <Task>[];
+  List _tasks = <Task>[];
 
   List getTasks() {
-    return this.tasks;
+    return this._tasks;
   }
 
   void addTask(String title, String description, String date, bool status) {
     Task newTask = Task(title, description, date, status);
-    tasks.add(newTask);
+    _tasks.add(newTask);
   }
 
   void editTaskTitle(int taskId, String value) {
-    this.tasks[taskId].setTitle(value);
+    this._tasks[taskId].setTitle(value);
   }
 
   void editTaskDescription(int taskId, String value) {
-    this.tasks[taskId].setDescription(value);
+    this._tasks[taskId].setDescription(value);
   }
 
   void editTaskDate(int taskId, String value) {
-    this.tasks[taskId].setDate(value);
+    this._tasks[taskId].setDate(value);
   }
 
   void editTaskStatus(int taskId, bool value) {
-    this.tasks[taskId].setStatus(value);
+    this._tasks[taskId].setStatus(value);
   }
 
   void viewPending() {
-    for (Task task in tasks) {
-      if (task.status == false) {
-        print('Title:   ' + task.title);
-        print('Description:   ' + task.description);
-        print('Due date:   ' + task.date);
+    for (Task task in _tasks) {
+      if (task.getStatus() == false) {
+        print('Title:   ' + task.getTitle());
+        print('Description:   ' + task.getDescription());
+        print('Due date:   ' + task.getDate());
       }
     }
   }
 
   void viewComplete() {
-    for (Task task in tasks) {
-      if (task.status == true) {
-        print('Title:   ' + task.title);
-        print('Description:   ' + task.description);
-        print('Due date:   ' + task.date);
+    for (Task task in _tasks) {
+      if (task.getStatus() == true) {
+        print('Title:   ' + task.getTitle());
+        print('Description:   ' + task.getDescription());
+        print('Due date:   ' + task.getDate());
       }
     }
   }
 
   void viewAll() {
-    for (Task task in tasks) {
-      print('Title:   ' + task.title);
-      print('Description:   ' + task.description);
-      print('Due date:   ' + task.date);
+    for (Task task in _tasks) {
+      print('Title:   ' + task.getTitle());
+      print('Description:   ' + task.getDescription());
+      print('Due date:   ' + task.getDate());
     }
   }
 
   void deleteTask(int taskId) {
-    tasks.removeAt(taskId);
+    _tasks.removeAt(taskId);
   }
 }
 
