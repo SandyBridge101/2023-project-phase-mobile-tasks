@@ -125,8 +125,8 @@ Widget _task_card(String title,String date,String icon_path,Color status){
           children:<Widget> [
             Expanded(
                 child:Container(
-                  width: 50,
-                  height: 50,
+                  width: 30,
+                  height: 30,
                   child: Image(
                     image: AssetImage(icon_path),
                   ),
