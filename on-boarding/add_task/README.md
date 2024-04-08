@@ -17,4 +17,4 @@ samples, guidance on mobile development, and a full API reference.
 
 ## UI
 
-![img_2.png](img_2.png)
+![img_3.png](img_3.png)
