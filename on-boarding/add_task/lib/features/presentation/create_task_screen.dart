@@ -118,6 +118,7 @@ Widget _input_card(String hint,String title){
               borderRadius: BorderRadius.circular(15)
             ),
             child: Container(
+              color: Colors.white,
               width: 500,
               child: TextField(
                 decoration: InputDecoration(
@@ -158,15 +159,30 @@ Widget _input_date_card(String hint,String title){
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15)
             ),
-            child: Container(
-              width: 500,
-              child: InputDatePickerFormField(
-                firstDate: DateTime(2023,01,09),
-                lastDate: DateTime(2028,08,08),
-                initialDate: DateTime.now(),
-                fieldHintText: DateFormat.yMMMd('en_US').format(DateTime.now()),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  margin:EdgeInsets.all(10),
+                  child: Text(
+                      DateFormat.yMMMd('en_US').format(DateTime.now()),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.calendar_month),
+                    onPressed: (){},
+                    color: Color.fromRGBO(238, 111, 87, 1),
+                  ),
+                )
+              ],
+            ),
             ),
 
           ),
