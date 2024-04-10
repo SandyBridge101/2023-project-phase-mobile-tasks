@@ -1,0 +1,4 @@
+[{"id": "1","title":"Watch funky town","description":"user discretion is advised","due_date":"April 5, 2024","status": "pending"},
+  {"id": "2","title":"Learn Flutter","description":"Learn Flutter navigation","due_date":"December 2, 2024","status": "completed"},
+  {"id": "3","title":"Design UI/UX","description":"Implement UI","due_date":"April 3, 2024","status": "due"},
+  {"id": "4","title":"Watch youtube tutorials","description":"Subscribe to NeetCode and solve some DSA","due_date":"April 12, 2024","status": "pending"}]
