@@ -58,3 +58,13 @@ Future<void> updateJson(int index,String title, String description, String due_d
   var n= await File('$directory/tasks.json').readAsString();
   print(n);
 }
+
+Future<void> refreshJson(int index,String title, String description, String due_date,String status,List tasks) async {
+  final Map<String,dynamic> data= new Map<String,dynamic>();
+  String directory = (await getApplicationDocumentsDirectory()).path;
+  print(tasks);
+
+  await File('$directory/tasks.json').writeAsString(jsonEncode(tasks));
+  var n= await File('$directory/tasks.json').readAsString();
+  print(n);
+}

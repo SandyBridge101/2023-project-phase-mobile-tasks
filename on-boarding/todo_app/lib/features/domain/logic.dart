@@ -17,6 +17,12 @@ class TaskManager {
     tasks.removeAt(index);
     await updateJson(index, title, description, date, status, tasks);
   }
+
+  Future<void> deleteTask(String title, String description, String date, String status, int index,)async{
+    List tasks= await readJson();
+    tasks.removeAt(index);
+    await refreshJson(index, title, description, date, status, tasks);
+  }
 }
 
 

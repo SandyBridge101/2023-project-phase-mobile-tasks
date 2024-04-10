@@ -3,13 +3,15 @@ import 'package:todo_app/features/domain/logic.dart';
 import 'package:intl/intl.dart';
 
 TextEditingController title_controller=TextEditingController();
-TextEditingController date_controller=TextEditingController();
+
 TextEditingController description_controller=TextEditingController();
 TextEditingController status_controller=TextEditingController();
+
 
 class TaskDetailScreen extends StatefulWidget{
   final int index;
   final List taskList;
+
 
   const TaskDetailScreen({super.key,required this.index,required this.taskList});
 
@@ -19,8 +21,9 @@ class TaskDetailScreen extends StatefulWidget{
 }
 
 class _TaskDetailScreenState extends State<TaskDetailScreen>{
-  final int index;
-  final List taskList;
+  int index;
+  List taskList;
+
 
   _TaskDetailScreenState({required this.index,required this.taskList});
 
@@ -72,13 +75,22 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
 
 
+
   String? _selectedOption='pending';
+  String date_controller='';
+
+
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
 
-    setState(() {});
+    setState(() {
+      date_controller=taskList[index]['due_date'];
+      _selectedOption=taskList[index]['status'];
+
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -169,7 +181,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                             Container(
                               margin:EdgeInsets.all(10),
                               child: Text(
-                                date_controller.text,
+                                date_controller,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -190,7 +202,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                                   if (pickedDate != null) {
 
                                     setState(() {
-                                      date_controller.text=DateFormat.yMMMd().format(pickedDate);
+                                      date_controller= DateFormat.yMMMd().format(pickedDate);
+                                      print(date_controller);
                                     });
                                   }
                                 },
@@ -246,7 +259,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                 child: ElevatedButton(
                   child: Text('Apply changes'),
                   onPressed: () async {
-                    await TaskManager().editTask(title_controller.text, description_controller.text, date_controller.text, status_controller.text, index);
+                    await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
                     Navigator.pop(context,'added');
                   },
                   style: ElevatedButton.styleFrom(
@@ -255,6 +268,21 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                     elevation: 5,
                   ),
                 )
+              ),
+
+              Container(
+                  child: ElevatedButton(
+                    child: Text('Delete Task'),
+                    onPressed: () async {
+                      await TaskManager().deleteTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
+                      Navigator.pop(context,'added');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
+                      elevation: 5,
+                    ),
+                  )
               )
 
             ],
