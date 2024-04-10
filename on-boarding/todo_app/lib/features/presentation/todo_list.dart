@@ -23,14 +23,24 @@ class _TodoListScreenState extends State<TodoListScreen>{
     int x=0;
 
     for (var task in tasks){
-      todo_list.add(_task_card(x,task['title'], task['due_date'], 'lib/assets/alph_w.png', Colors.red,context));
+      todo_list.add(_task_card(x,task['title'], task['due_date'], 'lib/assets/alph_w.png',task['status'],context));
       x++;
     }
 
     return todo_list;
   }
 
-  Widget _task_card(int index,String title,String date,String icon_path,Color status,BuildContext context){
+  Widget _task_card(int index,String title,String date,String icon_path,String status_,BuildContext context){
+    Color status;
+    if (status_=='pending'){
+      status=Colors.yellow;
+    }
+    else if(status_=='complete'){
+      status=Colors.green;
+    }
+    else{
+      status=Colors.red;
+    }
     return GestureDetector(
       onTap:()async{
         List tasks= await TaskManager().getTasks();
@@ -83,6 +93,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
                       ),
                     )
                 ),
+
                 Expanded(
                   child:Container(
                     child:VerticalDivider(

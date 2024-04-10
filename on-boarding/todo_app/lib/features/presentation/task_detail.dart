@@ -31,7 +31,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
     return Column(
       children: <Widget>[
         await _detail_card(index,"title",title_controller,200,50),
-        await _detail_card(index,"description",description_controller,200,200)
+        await _detail_card(index,"description",description_controller,200,200),
+
       ],
     );
   }
@@ -71,10 +72,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
 
 
+  String? _selectedOption='pending';
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     setState(() {});
+
     return Scaffold(
       appBar: AppBar(
         title: Container(
@@ -198,6 +203,41 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                       ),
 
                     ),
+
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(20),
+                            alignment: Alignment.centerLeft,
+                            child: Text("status"),
+                          ),
+                          Container(
+                            child: Card(
+                              child: Container(
+                                child: DropdownButton<String>(
+                                  value: _selectedOption,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      print(newValue);
+                                      _selectedOption = newValue!;
+                                      status_controller.text=newValue;
+                                    });
+                                  },
+                                  items: <String>['pending', 'complete', 'due']
+                                      .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
