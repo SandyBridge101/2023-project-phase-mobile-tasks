@@ -55,6 +55,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
       child:Container(
         margin: EdgeInsets.all(10),
         child: Card(
+
           elevation: 10,
           color: Colors.white,
           child: IntrinsicHeight(
@@ -157,6 +158,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
                   children: <Widget>[
                     Container(
                       child: Image(
+                        key: Key('todo icon'),
                         width: 200,
                         height: 200,
                         image:AssetImage('lib/assets/tm1.jpg'),
@@ -202,6 +204,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
               Container(
                 margin: EdgeInsets.all(10),
                 child: ElevatedButton(
+                  key: Key('create task button'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor:Colors.white ,
                     backgroundColor:Color.fromRGBO(238, 111, 87, 1),

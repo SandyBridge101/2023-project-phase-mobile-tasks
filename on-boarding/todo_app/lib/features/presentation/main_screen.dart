@@ -14,6 +14,7 @@ class MainScreen extends StatelessWidget{
             children: <Widget>[
               Container(
                 child: Image(
+                  key: Key('main screen image'),
                   width: 500,
                   height: 500,
                   image:AssetImage('lib/assets/tm3.png'),
@@ -21,6 +22,7 @@ class MainScreen extends StatelessWidget{
               ),
               Container(
                 child: ElevatedButton(
+                  key: Key('main screen button'),
                   child: Text('Get Started',
                       style:TextStyle(
                         fontSize: 20,

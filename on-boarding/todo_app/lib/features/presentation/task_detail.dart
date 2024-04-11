@@ -132,6 +132,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
             children: <Widget>[
               Container(
                 child: Image(
+                  key: Key('task detail icon'),
                   width: 200,
                   height: 200,
                   image:AssetImage('lib/assets/tm2.png'),
@@ -163,12 +164,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                 child: Column(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.all(20),
+                      margin: EdgeInsets.all(5),
                       alignment: Alignment.centerLeft,
                       child: Text("due_date"),
                     ),
                     Container(
                       child: Card(
+
                         //TODO:Make width dynamic
                         shadowColor: Colors.black,
                         elevation:10 ,
@@ -189,8 +191,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                               ),
                             ),
                             Container(
+                              margin: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: IconButton(
+                                key: Key('task detail date button'),
                                 icon: Icon(Icons.calendar_month),
                                 onPressed:() async {
                                   DateTime? pickedDate = await showDatePicker(
@@ -221,14 +225,16 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                       child: Column(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.all(20),
+                            margin: EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
                             child: Text("status"),
                           ),
                           Container(
                             child: Card(
                               child: Container(
+
                                 child: DropdownButton<String>(
+                                  key: Key('task detail status selector'),
                                   value: _selectedOption,
                                   onChanged: (String? newValue) {
                                     setState(() {
@@ -256,7 +262,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
               ),
 
               Container(
+                margin: EdgeInsets.all(10),
                 child: ElevatedButton(
+                  key: Key('task detail apply button'),
                   child: Text('Apply changes'),
                   onPressed: () async {
                     await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
@@ -271,7 +279,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
               ),
 
               Container(
+                margin: EdgeInsets.all(10),
                   child: ElevatedButton(
+                    key: Key('task detail delete button'),
                     child: Text('Delete Task'),
                     onPressed: () async {
                       await TaskManager().deleteTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);

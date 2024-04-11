@@ -50,6 +50,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
 
         title: Container(
           child: Text('Create new task',
+            key: Key('create task header'),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
@@ -75,6 +76,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                           Container(
                             alignment: Alignment.centerLeft,
                             child: Text(
+                              key: Key('create task field'),
                               'Due date',
                               style: TextStyle(
                                 fontSize: 15,
@@ -142,6 +144,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
 
               Container(
                 child: ElevatedButton(
+                  key: Key('create task add task button'),
                   child: Text('Add Task'),
                   onPressed: () async {
                     await TaskManager().addTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
@@ -192,6 +195,7 @@ Widget _input_card(String hint,String title,TextEditingController input_controll
               color: Colors.white,
               width: 500,
               child: TextField(
+                key: Key('create task field'),
                 controller: input_controller,
                 decoration: InputDecoration(
                     hintText: hint
