@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/features/domain/logic.dart';
 import 'package:intl/intl.dart';
+import 'package:dartz/dartz.dart' hide State;
 
 TextEditingController title_controller=TextEditingController();
-
 TextEditingController description_controller=TextEditingController();
 TextEditingController status_controller=TextEditingController();
+const double sizedBoxHeight=20;
 
+
+class Response{
+  late Either<String,String> input;
+
+  Response(dynamic response){
+    if(response == false){
+      input=Left('Invalid Input, Try again');
+    }
+    else{
+      input=Right('Done');
+    }
+  }
+}
 
 class TaskDetailScreen extends StatefulWidget{
   final int index;
@@ -23,9 +37,11 @@ class TaskDetailScreen extends StatefulWidget{
 class _TaskDetailScreenState extends State<TaskDetailScreen>{
   int index;
   List taskList;
+  late String date_controller;
 
-
-  _TaskDetailScreenState({required this.index,required this.taskList});
+  _TaskDetailScreenState({required this.index,required this.taskList}){
+    date_controller=taskList[index]['due_date'];
+  }
 
 
 
@@ -34,6 +50,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
     return Column(
       children: <Widget>[
         await _detail_card(index,"title",title_controller,200,50),
+        SizedBox(height: sizedBoxHeight,),
         await _detail_card(index,"description",description_controller,200,200),
 
       ],
@@ -51,7 +68,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
           Container(
             margin: EdgeInsets.all(20),
             alignment: Alignment.centerLeft,
-            child: Text(title),
+            child: Text(
+                title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+
+            ),
           ),
           Container(
             width: x,
@@ -61,7 +85,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                 child: TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hintText: tasks[index][title],
+                    hintText: 'input new task $title',
                   ),
                 ),
               ),
@@ -77,7 +101,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
 
   String? _selectedOption='pending';
-  String date_controller='';
+
+
 
 
 
@@ -87,7 +112,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
     // TODO: implement build
 
     setState(() {
-      date_controller=taskList[index]['due_date'];
+
       _selectedOption=taskList[index]['status'];
 
     });
@@ -130,12 +155,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
           margin: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
+
               Container(
                 child: Image(
                   key: Key('task detail icon'),
                   width: 200,
                   height: 200,
-                  image:AssetImage('lib/assets/tm2.png'),
+                  image:AssetImage('lib/assets/tm2.jpg'),
                 ),
               ),
 
@@ -160,14 +186,25 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                 ),
               ),
 
+              SizedBox(height: sizedBoxHeight,),
+
               Container(
                 child: Column(
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.all(5),
                       alignment: Alignment.centerLeft,
-                      child: Text("due_date"),
+                      child: Text(
+                        "due_date",
+                        style:TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
+
+                    SizedBox(height: sizedBoxHeight,),
+
                     Container(
                       child: Card(
 
@@ -221,13 +258,21 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
                     ),
 
+                    SizedBox(height: sizedBoxHeight,),
+
                     Container(
                       child: Column(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.all(5),
+
                             alignment: Alignment.centerLeft,
-                            child: Text("status"),
+                            child: Text(
+                                "status",
+                              style:TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
                           ),
                           Container(
                             child: Card(
@@ -261,14 +306,29 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                 ),
               ),
 
+              SizedBox(height: sizedBoxHeight,),
+
               Container(
                 margin: EdgeInsets.all(10),
                 child: ElevatedButton(
                   key: Key('task detail apply button'),
                   child: Text('Apply changes'),
                   onPressed: () async {
-                    await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
-                    Navigator.pop(context,'added');
+
+                    bool isvalid=false;
+                    const snackBar=SnackBar(content: const Text('Invalid input'));
+                    bool checker=title_controller.text!='' && description_controller.text!='' && date_controller!='';
+                    Response response=Response(checker);
+                    response.input.fold(
+                            (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                            (r) => isvalid=true
+                    );
+
+                    if(isvalid){
+                      await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
+                      Navigator.pop(context,'added');
+                    }
+
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -277,6 +337,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                   ),
                 )
               ),
+
+
 
               Container(
                 margin: EdgeInsets.all(10),

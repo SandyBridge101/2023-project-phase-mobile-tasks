@@ -1,4 +1,4 @@
-
+import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
 import 'package:todo_app/features/domain/logic.dart';
 import 'package:todo_app/features/presentation/task_detail.dart';
@@ -8,6 +8,19 @@ double secondary_font_size=5;
 const Color primary_color=Color(0xee6f57);
 
 String feedback='';
+
+class Response{
+  late Either<String,List> list;
+
+  Response(dynamic response){
+    if(response is String){
+      list=Left(response);
+    }
+    else{
+      list=Right(response);
+    }
+  }
+}
 
 class TodoListScreen extends StatefulWidget{
   const TodoListScreen({super.key});
@@ -161,7 +174,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
                         key: Key('todo icon'),
                         width: 200,
                         height: 200,
-                        image:AssetImage('lib/assets/tm1.jpg'),
+                        image:AssetImage('lib/assets/tm3.png'),
                       ),
                     ),
                     Container(
@@ -191,6 +204,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
                                 children: snapshot.data!,
                               );
                             }
+
                           }
                           // By default, show a loading spinner
                           return CircularProgressIndicator();

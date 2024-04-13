@@ -17,7 +17,7 @@ class MainScreen extends StatelessWidget{
                   key: Key('main screen image'),
                   width: 500,
                   height: 500,
-                  image:AssetImage('lib/assets/tm3.png'),
+                  image:AssetImage('lib/assets/tm1.png'),
                 ),
               ),
               Container(

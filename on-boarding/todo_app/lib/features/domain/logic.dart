@@ -8,7 +8,6 @@ class TaskManager {
 
 
   Future<List> getTasks() async{
-
     return await readJson();
   }
 

@@ -2,12 +2,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/features/domain/logic.dart';
+import 'package:dartz/dartz.dart' hide State;
 
 
 final taskname_controller=TextEditingController();
 final taskdate_controller=TextEditingController();
 final description_controller=TextEditingController();
 
+
+
+class Response{
+  late Either<String,String> input;
+
+  Response(dynamic response){
+    if(response == false){
+      input=Left('Invalid Input, Try again');
+    }
+    else{
+      input=Right('Done');
+    }
+  }
+}
 
 class CreateTaskScreen extends StatefulWidget{
   const CreateTaskScreen({super.key});
@@ -17,10 +32,15 @@ class CreateTaskScreen extends StatefulWidget{
 }
 
 class _CreateTaskScreenState extends State<CreateTaskScreen>{
+  final GlobalKey<ScaffoldState> scaffoldKey=GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    setState(() {
+
+    });
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         actions: [
           PopupMenuButton<String>(
@@ -114,7 +134,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                                         DateTime? pickedDate = await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
-                                          firstDate: DateTime(1900),
+                                          firstDate: DateTime.now(),
                                           lastDate: DateTime(3000),
                                         );
                                         if (pickedDate != null) {
@@ -147,8 +167,28 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                   key: Key('create task add task button'),
                   child: Text('Add Task'),
                   onPressed: () async {
-                    await TaskManager().addTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
-                    Navigator.pop(context,'added');
+                    bool isvalid=false;
+                    const snackBar=SnackBar(content: const Text('Invalid input'));
+                    bool checker=taskname_controller.text!='' && taskdate_controller.text!='' && description_controller.text!='';
+                    Response response=Response(checker);
+                    response.input.fold(
+                            (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                            (r) => isvalid=true
+                    );
+
+                    if(isvalid){
+                      await TaskManager().addTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
+                      Navigator.pop(context,'added');
+                    }
+
+
+
+
+
+
+                    taskname_controller.clear();
+                    taskdate_controller.clear();
+                    description_controller.clear();
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
