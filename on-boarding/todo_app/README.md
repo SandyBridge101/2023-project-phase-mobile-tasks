@@ -1,16 +1,21 @@
 # todo_app
 
-A new Flutter project.
+A task management application which allows users to create, update and delete tasks
 
-## Getting Started
+##  UI
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
 
-This project is a starting point for a Flutter application.
+## packages
+*   cupertino_icons: ^1.0.2
+*   intl: ^0.19.0
+*   path_provider: ^2.1.2
+*   dartz: ^0.10.1
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Updates
+* This application uses the Test Driven Architecture Which consists of features/data, features/domain and features/presentation
+* The application also uses Either<L,R> to handle exceptions from user inputs in the create-task page and task-details page
+* Widget testing is also available in the ./test/widget_test.dart

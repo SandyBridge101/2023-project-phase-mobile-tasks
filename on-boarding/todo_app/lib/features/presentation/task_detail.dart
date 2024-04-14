@@ -41,6 +41,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
   _TaskDetailScreenState({required this.index,required this.taskList}){
     date_controller=taskList[index]['due_date'];
+    title_controller.text=taskList[index]['title'];
+    description_controller.text=taskList[index]['description'];
   }
 
 
@@ -111,11 +113,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
     // TODO: implement build
 
-    setState(() {
-
-      _selectedOption=taskList[index]['status'];
-
-    });
 
     return Scaffold(
       appBar: AppBar(
