@@ -31,12 +31,12 @@ class TodoListScreen extends StatefulWidget{
 
 class _TodoListScreenState extends State<TodoListScreen>{
   Future<List<Widget>> _generate_todolist(BuildContext context) async {
-    List tasks= await TaskManager().getTasks();
+    List tasks= await TaskManager().ViewAllTasks();
     List<Widget> todo_list=[];
     int x=0;
 
     for (var task in tasks){
-      todo_list.add(_task_card(x,task['title'], task['due_date'], 'lib/assets/alph_w.png',task['status'],context));
+      todo_list.add(_task_card(x,task.title,task.convertDateToString(), 'lib/assets/alph_w.png',task.status,context));
       x++;
     }
 
@@ -56,9 +56,9 @@ class _TodoListScreenState extends State<TodoListScreen>{
     }
     return GestureDetector(
       onTap:()async{
-        List tasks= await TaskManager().getTasks();
+        List tasks= await TaskManager().ViewAllTasks();
 
-        final feedback=await Navigator.push(context, MaterialPageRoute(builder:(context)=>TaskDetailScreen(index: index, taskList: tasks)));
+        final feedback=await Navigator.push(context, MaterialPageRoute(builder:(context)=>TaskDetailScreen(index: index, task: tasks[index])));
 
         if(feedback=='added'){
           setState(() {});

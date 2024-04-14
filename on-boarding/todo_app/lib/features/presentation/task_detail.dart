@@ -24,25 +24,25 @@ class Response{
 
 class TaskDetailScreen extends StatefulWidget{
   final int index;
-  final List taskList;
+  final task;
 
 
-  const TaskDetailScreen({super.key,required this.index,required this.taskList});
+  const TaskDetailScreen({super.key,required this.index,required this.task});
 
 
   @override
-  State<StatefulWidget> createState() => _TaskDetailScreenState(index: index,taskList: taskList);
+  State<StatefulWidget> createState() => _TaskDetailScreenState(index: index,task: task);
 }
 
 class _TaskDetailScreenState extends State<TaskDetailScreen>{
   int index;
-  List taskList;
+  var task;
   late String date_controller;
 
-  _TaskDetailScreenState({required this.index,required this.taskList}){
-    date_controller=taskList[index]['due_date'];
-    title_controller.text=taskList[index]['title'];
-    description_controller.text=taskList[index]['description'];
+  _TaskDetailScreenState({required this.index,required this.task}){
+    date_controller=task.convertDateToString();
+    title_controller.text=task.title;
+    description_controller.text=task.description;
   }
 
 
@@ -60,10 +60,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
   }
 
   Future<Widget> _detail_card (int index,String title,TextEditingController controller,double x, double y) async {
-    List tasks= await TaskManager().getTasks();
+    List tasks= await TaskManager().ViewAllTasks();
     print('the tasks........');
     print(index);
-    controller.text=tasks[index][title];
+    if (title=='title'){
+      controller.text=tasks[index].title;
+    }else{
+      controller.text=tasks[index].description;
+    }
     return Container(
       child: Column(
         children: <Widget>[

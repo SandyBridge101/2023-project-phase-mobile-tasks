@@ -177,15 +177,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                     );
 
                     if(isvalid){
-                      await TaskManager().addTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
+                      await TaskManager().CreateTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
                       Navigator.pop(context,'added');
                     }
-
-
-
-
-
-
                     taskname_controller.clear();
                     taskdate_controller.clear();
                     description_controller.clear();
