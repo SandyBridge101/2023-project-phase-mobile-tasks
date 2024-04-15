@@ -1,25 +1,8 @@
-import 'package:todo_app/features/data/data_parser.dart';
+import 'package:todo_app/features/todo/data/models/todo_model.dart';
+import 'package:todo_app/features/todo/domain/entities/todo_task.dart';
 import 'package:intl/intl.dart';
+import 'package:dartz/dartz.dart' hide Task;
 
-class Task{
-  int? id;
-  String? title;
-  String? description;
-  DateTime? due_date;
-  String? status;
-
-  Task(int id,String title,String description,DateTime due_date, String status){
-    this.id=id;
-    this.title=title;
-    this.description=description;
-    this.due_date=due_date;
-    this.status=status;
-  }
-
-  String convertDateToString(){
-    return DateFormat.yMMMd().format(this.due_date!);
-  }
-}
 
 class TaskManager {
   List _tasks=<Task>[];

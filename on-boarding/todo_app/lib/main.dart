@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/features/presentation/create_task_screen.dart';
-import 'package:todo_app/features/presentation/main_screen.dart';
-import 'package:todo_app/features/presentation/todo_list.dart';
-import 'package:todo_app/features/data/data_parser.dart';
+import 'package:todo_app/features/todo/presentation/create_task_screen.dart';
+import 'package:todo_app/features/todo/presentation/main_screen.dart';
+import 'package:todo_app/features/todo/presentation/todo_list.dart';
+import 'package:todo_app/features/todo/data/models/todo_model.dart';
 
 
 

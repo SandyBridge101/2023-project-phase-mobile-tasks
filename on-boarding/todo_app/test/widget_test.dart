@@ -9,11 +9,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_app/features/presentation/create_task_screen.dart';
-import 'package:todo_app/features/presentation/main_screen.dart';
-import 'package:todo_app/features/presentation/task_detail.dart';
-import 'package:todo_app/features/presentation/todo_list.dart';
-import 'package:todo_app/features/domain/logic.dart';
+import 'package:todo_app/features/todo/presentation/create_task_screen.dart';
+import 'package:todo_app/features/todo/presentation/main_screen.dart';
+import 'package:todo_app/features/todo/presentation/task_detail.dart';
+import 'package:todo_app/features/todo/presentation/todo_list.dart';
+import 'package:todo_app/features/todo/domain/repository/task_manager.dart';
 
 import 'package:todo_app/main.dart';
 
@@ -30,6 +30,7 @@ void main() {
 
     //expect return
     expect(main_button, findsOneWidget);
+    expect(main_image, findsOneWidget);
 
     //execute
     await tester.tap(main_button);
@@ -111,7 +112,5 @@ void main() {
     expect(find.byType(GestureDetector), findsWidgets);
     expect(icon, findsWidgets);
   });
-
-
 
 }

@@ -1,10 +1,35 @@
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io';
-import   'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dartz/dartz.dart';
+
+
 
 List tasks=[];
 
+class TodoModel{
+  final String title;
+  final String description;
+  final String due_date;
+  final String status;
+
+  TodoModel(this.title, this.description, this.due_date, this.status);
+
+  Map<String,dynamic> toJson() =>{
+    'title':title,
+    'description':description,
+    'due_date':due_date,
+    'status':status
+  };
+
+  TodoModel.fromJson(Map<String,dynamic> json):
+      title=json['title'] as String,
+      description=json['description'] as String,
+      due_date=json['due_date'] as String,
+      status=json['status'] as String
+  ;
+}
 
 Future <List> readJson() async{
   String directory = (await getApplicationDocumentsDirectory()).path;
@@ -44,8 +69,9 @@ Future<void> writeJson(String title, String description, String due_date,String 
 }
 
 Future<void> updateJson(int index,String title, String description, String due_date,String status,List tasks) async {
-  final Map<String,dynamic> data= new Map<String,dynamic>();
+
   String directory = (await getApplicationDocumentsDirectory()).path;
+  final Map<String,dynamic> data= new Map<String,dynamic>();
   data["title"]=title;
   data["description"]=description;
   data["due_date"]=due_date;
