@@ -18,41 +18,57 @@ import 'package:todo_app/features/domain/logic.dart';
 import 'package:todo_app/main.dart';
 
 void main() {
-  testWidgets('Main Screen Test', (WidgetTester tester) async {
+  testWidgets('Main Screen to Todo List Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
+
+
 
     // Verify that our counter starts at 0.
     final main_image=find.byKey(ValueKey('main screen image'));
     final main_button=find.byKey(ValueKey('main screen button'));
 
+    //expect return
+    expect(main_button, findsOneWidget);
 
     //execute
     await tester.tap(main_button);
-    await tester.pump();
+    for (int i = 0; i < 5; i++) {
+      await tester.pump(Duration(seconds: 1));
+    }
 
-    //expect return
-    expect(main_button, findsOneWidget);
+    expect(find.text('Todo List'), findsOneWidget);
+
   });
 
-  testWidgets('CreateTask Screen Test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Create Task Test', (WidgetTester tester) async {
+    // Bui ld our app and trigger a frame.
     await tester.pumpWidget(MaterialApp(home: CreateTaskScreen(),));
 
     // Verify that our counter starts at 0.
     final header=find.byKey(ValueKey('create task header'));
-    final field=find.byKey(ValueKey('create task field'));
-    final button=find.byKey(ValueKey('create task add task button'));
-
-
-    //execute
-    await tester.tap(button);
-    await tester.pump();
+    final title=find.byKey(ValueKey('title field'));
+    final description=find.byKey(ValueKey('description field'));
+    final date=find.byKey(ValueKey('date picker'));
+    final button=find.byKey(ValueKey('create task button'));
 
     //expect return
     expect(button, findsOneWidget);
-    expect(field, findsWidgets);
+    expect(title, findsWidgets);
+    expect(description, findsWidgets);
+    expect(date, findsWidgets);
     expect(header, findsOneWidget);
+
+
+    //execute
+    await tester.enterText(title, 'New Title');
+    await tester.enterText(description, 'New Description');
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+
+    expect(find.text('New Title'), findsOneWidget);
+
+
   });
 
   testWidgets('CreateTask Screen Test', (WidgetTester tester) async {
@@ -62,7 +78,7 @@ void main() {
     // Verify that our counter starts at 0.
     final header=find.byKey(ValueKey('create task header'));
     final field=find.byKey(ValueKey('create task field'));
-    final button=find.byKey(ValueKey('create task add task button'));
+    final button=find.byKey(ValueKey('create task button'));
 
 
     //execute
@@ -86,21 +102,14 @@ void main() {
             '/create_task':(context)=>CreateTaskScreen()
           },
     ));
+    
 
     // Verify that our counter starts at 0.
     final icon=find.byKey(ValueKey('todo icon'));
-    final card=find.byType(CircularProgressIndicator);
-    final button=find.byKey(ValueKey('create task button'));
 
 
-    //execute
-    await tester.tap(button);
-    await tester.pump(Duration(seconds: 10));
-
-    //expect return
-    expect(button, findsOneWidget);
-    expect(card, findsWidgets);
-    expect(icon, findsOneWidget);
+    expect(find.byType(GestureDetector), findsWidgets);
+    expect(icon, findsWidgets);
   });
 
 

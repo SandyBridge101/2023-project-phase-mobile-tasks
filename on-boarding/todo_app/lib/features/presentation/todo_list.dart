@@ -55,6 +55,7 @@ class _TodoListScreenState extends State<TodoListScreen>{
       status=Colors.red;
     }
     return GestureDetector(
+      key: Key('task$index card'),
       onTap:()async{
         List tasks= await TaskManager().ViewAllTasks();
 

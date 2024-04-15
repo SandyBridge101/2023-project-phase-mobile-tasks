@@ -129,6 +129,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     child: IconButton(
+                                      key: Key('date picker'),
                                       icon: Icon(Icons.calendar_month),
                                       onPressed:() async {
                                         DateTime? pickedDate = await showDatePicker(
@@ -164,12 +165,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
 
               Container(
                 child: ElevatedButton(
-                  key: Key('create task add task button'),
+                  key: Key('create task button'),
                   child: Text('Add Task'),
                   onPressed: () async {
                     bool isvalid=false;
                     const snackBar=SnackBar(content: const Text('Invalid input'));
-                    bool checker=taskname_controller.text!='' && taskdate_controller.text!='' && description_controller.text!='';
+                    bool checker=taskname_controller.text!='' && description_controller.text!='';
                     Response response=Response(checker);
                     response.input.fold(
                             (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
@@ -201,6 +202,15 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
 }
 
 Widget _input_card(String hint,String title,TextEditingController input_controller){
+  var key=null;
+
+  if (title=='Mobile Task Name'){
+    key=Key('title field');
+  }
+  else{
+    key=Key('description field');
+  }
+
   return Container(
     margin: EdgeInsets.all(20),
     child: Column(
@@ -229,7 +239,7 @@ Widget _input_card(String hint,String title,TextEditingController input_controll
               color: Colors.white,
               width: 500,
               child: TextField(
-                key: Key('create task field'),
+                key: key ,
                 controller: input_controller,
                 decoration: InputDecoration(
                     hintText: hint
