@@ -40,7 +40,7 @@ class TodoRepositoryImpl implements TodoRepository{
       if(connectionStatus==false){
         print('could not connect');
         return Left('Could not connect');
-      };-
+      };
       final result=await todoLocalDataSource.viewAllTasks();
       return Right(result);
     }catch(e){
