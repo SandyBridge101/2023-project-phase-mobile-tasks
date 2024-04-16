@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
-import 'package:todo_app/features/todo/domain/repository/task_manager.dart';
+import 'package:todo_app/core/util/task_manager.dart';
 import 'package:todo_app/features/todo/presentation/task_detail.dart';
 
 double primary_font_size=16;

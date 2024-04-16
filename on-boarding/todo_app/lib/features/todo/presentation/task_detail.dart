@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/features/todo/domain/repository/task_manager.dart';
+import 'package:todo_app/core/util/task_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:dartz/dartz.dart' hide State;
 
@@ -347,7 +347,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
                     key: Key('task detail delete button'),
                     child: Text('Delete Task'),
                     onPressed: () async {
-                      await TaskManager().deleteTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
+                      await TaskManager().deleteTask( index);
                       Navigator.pop(context,'added');
                     },
                     style: ElevatedButton.styleFrom(

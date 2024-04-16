@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/features/todo/presentation/create_task_screen.dart';
 import 'package:todo_app/features/todo/presentation/main_screen.dart';
 import 'package:todo_app/features/todo/presentation/todo_list.dart';
-import 'package:todo_app/features/todo/data/models/todo_model.dart';
+import 'package:todo_app/core/util/json_parser.dart';
 
 
 

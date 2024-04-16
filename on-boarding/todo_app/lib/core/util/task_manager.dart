@@ -1,4 +1,4 @@
-import 'package:todo_app/features/todo/data/models/todo_model.dart';
+import 'package:todo_app/core/util/json_parser.dart';
 import 'package:todo_app/features/todo/domain/entities/todo_task.dart';
 import 'package:intl/intl.dart';
 import 'package:dartz/dartz.dart' hide Task;
@@ -36,11 +36,11 @@ class TaskManager {
     _tasks[index]=Task(index, title, description,DateFormat.yMMMd().parse(date), status);
   }
 
-  Future<void> deleteTask(String title, String description, String date, String status, int index,)async{
+  Future<void> deleteTask(int index,)async{
     await ViewAllTasks();
     List data= await readJson();
     data.removeAt(index);
-    await refreshJson(index, title, description, date, status, data);
+    await refreshJson();
     _tasks.removeAt(index);
   }
 }
