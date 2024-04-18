@@ -9,10 +9,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_app/features/todo/presentation/create_task_screen.dart';
-import 'package:todo_app/features/todo/presentation/main_screen.dart';
-import 'package:todo_app/features/todo/presentation/task_detail.dart';
-import 'package:todo_app/features/todo/presentation/todo_list.dart';
+import 'package:todo_app/features/todo/presentation/pages/create_task_screen.dart';
+import 'package:todo_app/features/todo/presentation/pages/main_screen.dart';
+import 'package:todo_app/features/todo/presentation/pages/task_detail.dart';
+import 'package:todo_app/features/todo/presentation/pages/todo_list.dart';
 import 'package:todo_app/core/util/task_manager.dart';
 
 import 'package:todo_app/main.dart';

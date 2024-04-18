@@ -58,6 +58,16 @@ class TodoRepositoryImpl implements TodoRepository{
     }
   }
 
+  @override
+  Future<Either<String, void>> createTask(Task task) async {
+    try{
+      await todoLocalDataSource.createTask(task);
+      return Right(null);
+    }catch(e){
+      return Left('Error in collecting data');
+    }
+  }
+
 
 
 }

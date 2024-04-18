@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/features/todo/presentation/create_task_screen.dart';
-import 'package:todo_app/features/todo/presentation/main_screen.dart';
-import 'package:todo_app/features/todo/presentation/todo_list.dart';
+import 'package:todo_app/features/todo/presentation/pages/create_task_screen.dart';
+import 'package:todo_app/features/todo/presentation/pages/main_screen.dart';
+import 'package:todo_app/features/todo/presentation/pages/todo_list.dart';
 import 'package:todo_app/core/util/json_parser.dart';
+import 'package:todo_app/injection_container.dart'as di;
 
 
 
@@ -11,8 +12,9 @@ Future tasks() async {
   return tasks;
 }
 
-void main() {
-
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(const MyApp());
 }
 

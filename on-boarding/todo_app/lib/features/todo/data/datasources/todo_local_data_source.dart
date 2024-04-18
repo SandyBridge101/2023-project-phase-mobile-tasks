@@ -5,6 +5,7 @@ import 'package:todo_app/core/util/task_manager.dart';
 abstract class TodoLocalDataSource{
   Future<List> viewAllTasks();
   Future<Task> viewTask(int index);
+  Future<void> createTask(Task task);
   Future<void> editTask(String title,String description,String date,String status,int index);
   Future<void> deleteTask(int index);
 }
@@ -42,6 +43,13 @@ class TodoLocalDataSourceImpl extends TodoLocalDataSource{
   Future<Task> viewTask(int index) async {
 
     return await TaskManager().ViewTask(index);
+  }
+
+  @override
+  Future<void> createTask(Task task) async {
+
+    await TaskManager().CreateTask(task.title!, task.description!, task.convertDateToString(), task.status!);
+
   }
 
 }

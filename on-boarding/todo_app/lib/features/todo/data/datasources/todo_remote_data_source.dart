@@ -7,3 +7,31 @@ abstract class TodoRemoteDataSource{
   Future<void> editTask();
   Future<void> deleteTask();
 }
+
+class TodoRemoteDataSourceImpl extends TodoRemoteDataSource{
+  @override
+  Future<void> deleteTask() {
+    // TODO: implement deleteTask
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> editTask() {
+    // TODO: implement editTask
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List> viewAllTasks() {
+    // TODO: implement viewAllTasks
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Task> viewTask() {
+    // TODO: implement viewTask
+    throw UnimplementedError();
+  }
+
+
+}

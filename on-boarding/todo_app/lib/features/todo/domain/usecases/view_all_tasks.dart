@@ -4,14 +4,18 @@ import 'package:dartz/dartz.dart';
 import 'package:todo_app/core/util/task_manager.dart';
 import 'package:todo_app/core/use_case/use_case.dart';
 
-class ViewAllTasks extends UseCase<List,NoParams>{
+class ViewAllTasks implements UseCase<List,NoParams>{
+  TaskManager taskManager;
+
+  ViewAllTasks(this.taskManager);
   @override
   Future<Either<String,List>>call(NoParams params)async{
-    List tasks= await TaskManager().ViewAllTasks();
-
-    if (tasks.isNotEmpty){
+    try{
+      List tasks= await TaskManager().ViewAllTasks();
+      print('retrieve tasks');
       return Right(tasks);
-    }else{
+    }catch(e){
+      print('Could not retrieve tasks: $e');
       return Left('Could not retrieve tasks');
     }
   }

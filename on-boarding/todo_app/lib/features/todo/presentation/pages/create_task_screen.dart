@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/core/util/task_manager.dart';
 import 'package:dartz/dartz.dart' hide State;
+import 'package:todo_app/features/todo/presentation/bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:todo_app/features/todo/domain/usecases/create_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/view_all_tasks.dart';
+import 'package:todo_app/features/todo/domain/usecases/view_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/edit_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/delete_task.dart';
 
 final taskname_controller=TextEditingController();
 final taskdate_controller=TextEditingController();
@@ -163,36 +170,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>{
                 ),
               ),
 
-              Container(
-                child: ElevatedButton(
-                  key: Key('create task button'),
-                  child: Text('Add Task'),
-                  onPressed: () async {
-                    bool isvalid=false;
-                    const snackBar=SnackBar(content: const Text('Invalid input'));
-                    bool checker=taskname_controller.text!='' && description_controller.text!='';
-                    Response response=Response(checker);
-                    response.input.fold(
-                            (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
-                            (r) => isvalid=true
-                    );
-
-                    if(isvalid){
-                      await TaskManager().CreateTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
-                      Navigator.pop(context,'added');
-                    }
-                    taskname_controller.clear();
-                    taskdate_controller.clear();
-                    description_controller.clear();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color.fromRGBO(238, 111, 87, 1),
-                    elevation: 5,
-                  ),
-
-                ),
-              )
+              buildButton(context)
             ],
           ),
         ),
@@ -331,6 +309,47 @@ class InputDateCard extends State<CreateTaskScreen>{
     // TODO: implement build
     throw UnimplementedError();
   }
+}
 
+BlocProvider<TodoBloc> buildButton(BuildContext context){
 
+  return BlocProvider(
+    create:(_)=>TodoBloc(IntialState(),taskManager: TaskManager()),
+    child: BlocBuilder<TodoBloc,TodoState>(
+      builder: (context,state){
+        return Container(
+          child: ElevatedButton(
+            key: Key('create task button'),
+            child: Text('Add Task'),
+            onPressed: () async {
+              bool isvalid=false;
+              const snackBar=SnackBar(content: const Text('Invalid input'));
+              bool checker=taskname_controller.text!='' && description_controller.text!='';
+              Response response=Response(checker);
+              response.input.fold(
+                      (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                      (r) => isvalid=true
+              );
+
+              if(isvalid){
+                BlocProvider.of<TodoBloc>(context).add(CreateTaskEvent(title: taskname_controller.text, description: description_controller.text, due_date: taskdate_controller.text, status: 'pending', id: 0));
+                //await TaskManager().CreateTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
+                // BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
+                Navigator.pop(context,'added');
+              }
+              taskname_controller.clear();
+              taskdate_controller.clear();
+              description_controller.clear();
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Color.fromRGBO(238, 111, 87, 1),
+              elevation: 5,
+            ),
+
+          ),
+        );
+      },
+    ),
+  );
 }

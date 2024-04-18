@@ -3,18 +3,17 @@ import 'package:todo_app/core/use_case/use_case.dart';
 import 'package:dartz/dartz.dart' hide Task;
 import 'package:todo_app/core/util/task_manager.dart';
 
-class CreateTask implements UseCase<String,Task>{
+class DeleteTask implements UseCase<String,int>{
   TaskManager taskManager;
 
-  CreateTask(this.taskManager);
+  DeleteTask(this.taskManager);
   @override
-  Future<Either<String,String>> call(Task task) async {
+  Future<Either<String,String>> call(int index) async {
     try{
-      await TaskManager().CreateTask(task.title!, task.description!,task.convertDateToString(), task.status!);
+      await taskManager.deleteTask(index);
       return Right('Task Added');
     }catch(e){
       return Left('Unable to add Task');
     }
   }
-
 }

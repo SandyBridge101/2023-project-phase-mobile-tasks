@@ -27,7 +27,7 @@ class TaskManager {
     return _tasks[index];
   }
 
-  Future<void> editTask(String title, String description, String date, String status, int index,)async{
+  Future<void> editTask(String title, String description, String date, String status, int index)async{
     await ViewAllTasks();
     List data= await readJson();
     data.removeAt(index);
