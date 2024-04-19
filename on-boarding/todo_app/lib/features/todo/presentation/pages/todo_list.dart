@@ -165,14 +165,39 @@ class TodoListScreen extends StatelessWidget{
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(5),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Tasks List',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
+                    margin: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Tasks List',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor:Colors.white ,
+                              backgroundColor:Color.fromRGBO(238, 111, 87, 1),
+                              shape: BeveledRectangleBorder(
+                                borderRadius:BorderRadius.circular(0.2),
+                              )
+                          ),
+                          child: Text('Refresh'),
+                          onPressed: ()async{
+                            //BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
+                            Navigator.pop(context);
+                            await Navigator.pushNamed(context, '/todo');
+
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -205,6 +230,7 @@ class TodoListScreen extends StatelessWidget{
             Container(
               margin: EdgeInsets.all(10),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children:<Widget> [
                   ElevatedButton(
                     key: Key('create task button'),
@@ -224,23 +250,7 @@ class TodoListScreen extends StatelessWidget{
                     },
 
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor:Colors.white ,
-                        backgroundColor:Color.fromRGBO(238, 111, 87, 1),
-                        shape: BeveledRectangleBorder(
-                          borderRadius:BorderRadius.circular(0.2),
-                        )
 
-                    ),
-                    child: Text('Refresh'),
-                    onPressed: ()async{
-                      //BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
-                      Navigator.pop(context);
-                      await Navigator.pushNamed(context, '/todo');
-
-                    },
-                  ),
                 ],
               )
             )
