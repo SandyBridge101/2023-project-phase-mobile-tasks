@@ -7,9 +7,10 @@ import 'package:dartz/dartz.dart' hide Task;
 class TaskManager {
   List _tasks=<Task>[];
 
-  Future<void> CreateTask(String title, String description, String date, String status) async {
+  Future<List> CreateTask(String title, String description, String date, String status) async {
     await writeJson(title, description, date, status);
     _tasks.add(Task(_tasks.length+1, title, description, DateFormat.yMMMd().parse(date), status));
+    return _tasks;
   }
 
   Future<List> ViewAllTasks() async{
@@ -27,20 +28,31 @@ class TaskManager {
     return _tasks[index];
   }
 
-  Future<void> editTask(String title, String description, String date, String status, int index)async{
-    await ViewAllTasks();
+  Future<List> editTask(String title, String description, String date, String status, int index)async{
+    _tasks=await ViewAllTasks();
     List data= await readJson();
-    data.removeAt(index);
-    await updateJson(index, title, description, date, status, data);
+    data[index]["title"]=title;
+    data[index]["description"]=description;
+    data[index]["due_date"]=date;
+    data[index]["status"]=status;
+    await refreshJson(data);
+    //await updateJson(index, title, description, date, status, data);
 
     _tasks[index]=Task(index, title, description,DateFormat.yMMMd().parse(date), status);
+
+
+
+    return _tasks;
   }
 
-  Future<void> deleteTask(int index,)async{
+  Future<List> deleteTask(int index,)async{
     await ViewAllTasks();
     List data= await readJson();
     data.removeAt(index);
-    await refreshJson();
+    await refreshJson(data);
     _tasks.removeAt(index);
+    print(_tasks);
+
+    return _tasks;
   }
 }

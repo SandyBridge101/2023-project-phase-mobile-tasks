@@ -60,8 +60,8 @@ Future<void> updateJson(int index,String title, String description, String due_d
   print(n);
 }
 
-Future<void> refreshJson() async {
-  final Map<String,dynamic> data= new Map<String,dynamic>();
+Future<void> refreshJson(List tasks) async {
+
   String directory = (await getApplicationDocumentsDirectory()).path;
   print(tasks);
 

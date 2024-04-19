@@ -5,6 +5,7 @@ import 'package:todo_app/core/util/task_manager.dart';
 import 'package:todo_app/features/todo/presentation/pages/task_detail.dart';
 import 'package:todo_app/features/todo/presentation/bloc/bloc.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo_app/features/todo/presentation/bloc/todo_state.dart';
 
 import 'package:todo_app/features/todo/domain/usecases/create_task.dart';
 import 'package:todo_app/features/todo/domain/usecases/view_all_tasks.dart';
@@ -34,14 +35,11 @@ class Response{
   }
 }
 
-class TodoListScreen extends StatefulWidget{
-  const TodoListScreen({super.key});
 
-  @override
-  State<StatefulWidget> createState() => _TodoListScreenState();
-}
 List tasks=[];
-class _TodoListScreenState extends State<TodoListScreen>{
+class TodoListScreen extends StatelessWidget{
+
+  const TodoListScreen({super.key});
 
   Future<List<Widget>> _generate_todolist(BuildContext context,List tasks) async {
     //tasks= await TaskManager().ViewAllTasks();
@@ -69,14 +67,22 @@ class _TodoListScreenState extends State<TodoListScreen>{
     }
     return GestureDetector(
       key: Key('task$index card'),
-      onTap:()async{
-        List tasks= await TaskManager().ViewAllTasks();
+      onTap:()async {
+        List tasks = await TaskManager().ViewAllTasks();
 
-        final feedback=await Navigator.push(context, MaterialPageRoute(builder:(context)=>TaskDetailScreen(index: index, task: tasks[index])));
 
-        if(feedback=='added'){
-          setState(() {});
-        }
+      try{
+        tasks[index];
+        await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            TaskDetailScreen(index: index, task: tasks[index])));
+      }catch(e){
+        print('invalid screen');
+      }
+
+
+        BlocProvider.of<TodoBloc>(context).add(GetSingleTaskEvent(index: index));
+
+
 
       },
       child:Container(
@@ -141,7 +147,8 @@ class _TodoListScreenState extends State<TodoListScreen>{
     );
   }
 
-  Widget bodyDisplay(List tasks){
+  Widget bodyDisplay(List tasks,BuildContext context){
+
     return SingleChildScrollView(
       child:Container(
         child: Column(
@@ -197,26 +204,45 @@ class _TodoListScreenState extends State<TodoListScreen>{
 
             Container(
               margin: EdgeInsets.all(10),
-              child: ElevatedButton(
-                key: Key('create task button'),
-                style: ElevatedButton.styleFrom(
-                    foregroundColor:Colors.white ,
-                    backgroundColor:Color.fromRGBO(238, 111, 87, 1),
-                    shape: BeveledRectangleBorder(
-                      borderRadius:BorderRadius.circular(0.2),
-                    )
+              child: Row(
+                children:<Widget> [
+                  ElevatedButton(
+                    key: Key('create task button'),
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor:Colors.white ,
+                        backgroundColor:Color.fromRGBO(238, 111, 87, 1),
+                        shape: BeveledRectangleBorder(
+                          borderRadius:BorderRadius.circular(0.2),
+                        )
 
-                ),
-                child: Text('Create Task'),
-                onPressed: ()async{
-                  final feedback=await Navigator.pushNamed(context, '/create_task');
+                    ),
+                    child: Text('Create Task'),
+                    onPressed: ()async{
 
-                  if(feedback=='added'){
-                    setState(() {});
-                  }
-                },
+                      await Navigator.pushNamed(context, '/create_task');
 
-              ),
+                    },
+
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor:Colors.white ,
+                        backgroundColor:Color.fromRGBO(238, 111, 87, 1),
+                        shape: BeveledRectangleBorder(
+                          borderRadius:BorderRadius.circular(0.2),
+                        )
+
+                    ),
+                    child: Text('Refresh'),
+                    onPressed: ()async{
+                      //BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
+                      Navigator.pop(context);
+                      await Navigator.pushNamed(context, '/todo');
+
+                    },
+                  ),
+                ],
+              )
             )
           ],
         ),
@@ -227,17 +253,24 @@ class _TodoListScreenState extends State<TodoListScreen>{
   BlocProvider<TodoBloc> buildBody(BuildContext context){
 
     return BlocProvider(
-      create:(_)=> TodoBloc(LoadingState(),taskManager: TaskManager()),
+      create:(_)=> sl<TodoBloc>(),
       child: BlocBuilder<TodoBloc,TodoState>(
         builder: (context,state){
-          bool isLoaded=false;
+          print('todo $state');
+
           if (state is LoadingState){
             print('loading State....');
             return Text('Loading....');
           }
           else if( state is LoadedAllTasksState){
-            print('current state ......$isLoaded');
-            return bodyDisplay(state.tasks);
+            print(state.tasks);
+
+            context.read<TodoBloc>().add(LoadAllTasksEvent());
+
+            return bodyDisplay(state.tasks,context);
+          }
+          else if(state is TodoState){
+            BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
           }
           return Text('Error');
 
@@ -247,11 +280,12 @@ class _TodoListScreenState extends State<TodoListScreen>{
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     print(tasks);
-    setState(() {});
     return  Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -262,8 +296,6 @@ class _TodoListScreenState extends State<TodoListScreen>{
         actions: [
           PopupMenuButton<String>(
             onSelected: (String value) {
-              setState(() {
-              });
             },
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(

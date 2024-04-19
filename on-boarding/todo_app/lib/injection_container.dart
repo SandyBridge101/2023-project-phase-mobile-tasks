@@ -31,15 +31,17 @@ Future<void> init()async{
   //
   sl.registerLazySingleton(() => TaskManager().ViewAllTasks());
 //States
+  /*
   sl.registerLazySingleton(() => IntialState());
   sl.registerLazySingleton(() => LoadingState());
   sl.registerLazySingleton(() => LoadedAllTasksState(tasks: sl()));
   sl.registerLazySingleton(() => LoadedSingleTaskState());
+   */
   sl.registerLazySingleton(() => TodoState());
 
 
   //Usecases
-  //sl.registerLazySingleton(() => CreateTask(sl()));
+  sl.registerLazySingleton(() => CreateTask(sl()));
   sl.registerLazySingleton(() => EditTask(sl()));
   sl.registerLazySingleton(() => DeleteTask(sl()));
   sl.registerLazySingleton(() => ViewTask(sl()));

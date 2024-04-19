@@ -3,6 +3,16 @@ import 'package:todo_app/core/util/task_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:dartz/dartz.dart' hide State;
 
+import 'package:todo_app/features/todo/presentation/bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/injection_container.dart';
+
+import 'package:todo_app/features/todo/domain/usecases/create_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/view_all_tasks.dart';
+import 'package:todo_app/features/todo/domain/usecases/view_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/edit_task.dart';
+import 'package:todo_app/features/todo/domain/usecases/delete_task.dart';
+
 TextEditingController title_controller=TextEditingController();
 TextEditingController description_controller=TextEditingController();
 TextEditingController status_controller=TextEditingController();
@@ -309,54 +319,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
 
               SizedBox(height: sizedBoxHeight,),
 
-              Container(
-                margin: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  key: Key('task detail apply button'),
-                  child: Text('Apply changes'),
-                  onPressed: () async {
 
-                    bool isvalid=false;
-                    const snackBar=SnackBar(content: const Text('Invalid input'));
-                    bool checker=title_controller.text!='' && description_controller.text!='' && date_controller!='';
-                    Response response=Response(checker);
-                    response.input.fold(
-                            (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
-                            (r) => isvalid=true
-                    );
-
-                    if(isvalid){
-                      await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
-                      Navigator.pop(context,'added');
-                    }
-
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color.fromRGBO(238, 111, 87, 1),
-                    elevation: 5,
-                  ),
-                )
-              ),
-
-
-
-              Container(
-                margin: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    key: Key('task detail delete button'),
-                    child: Text('Delete Task'),
-                    onPressed: () async {
-                      await TaskManager().deleteTask( index);
-                      Navigator.pop(context,'added');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.red,
-                      elevation: 5,
-                    ),
-                  )
-              )
+              buildButtons(context,date_controller,index),
 
             ],
           ),
@@ -366,3 +330,68 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>{
   }
 }
 
+BlocProvider<TodoBloc> buildButtons(BuildContext context,String date_controller,int index){
+
+  return BlocProvider(
+    create:(_)=> sl<TodoBloc>(),
+    child: BlocBuilder<TodoBloc,TodoState>(
+      builder: (context,state){
+        return Container(
+          child: Column(
+            children: <Widget>[
+
+              Container(
+                  margin: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    key: Key('task detail apply button'),
+                    child: Text('Apply changes'),
+                    onPressed: () async {
+
+                      bool isvalid=false;
+                      const snackBar=SnackBar(content: const Text('Invalid input'));
+                      bool checker=title_controller.text!='' && description_controller.text!='' && date_controller!='';
+                      Response response=Response(checker);
+                      response.input.fold(
+                              (l) => ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                              (r) => isvalid=true
+                      );
+
+                      if(isvalid){
+                        await TaskManager().editTask(title_controller.text, description_controller.text, date_controller, status_controller.text, index);
+                        BlocProvider.of<TodoBloc>(context).add(UpdateTaskEvent(title: title_controller.text, description: description_controller.text, due_date: date_controller, status: status_controller.text, id: index));
+                        Navigator.pop(context,'added');
+                      }
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color.fromRGBO(238, 111, 87, 1),
+                      elevation: 5,
+                    ),
+                  )
+              ),
+
+              Container(
+                  margin: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    key: Key('task detail delete button'),
+                    child: Text('Delete Task'),
+                    onPressed: () async {
+                      //await TaskManager().deleteTask( index);
+                      BlocProvider.of<TodoBloc>(context).add(DeleteTaskEvent(index: index));
+                      Navigator.pop(context,'added');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
+                      elevation: 5,
+                    ),
+                  )
+              )
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}

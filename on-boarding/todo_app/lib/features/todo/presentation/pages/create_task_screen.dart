@@ -5,6 +5,7 @@ import 'package:todo_app/core/util/task_manager.dart';
 import 'package:dartz/dartz.dart' hide State;
 import 'package:todo_app/features/todo/presentation/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/injection_container.dart';
 
 import 'package:todo_app/features/todo/domain/usecases/create_task.dart';
 import 'package:todo_app/features/todo/domain/usecases/view_all_tasks.dart';
@@ -314,7 +315,7 @@ class InputDateCard extends State<CreateTaskScreen>{
 BlocProvider<TodoBloc> buildButton(BuildContext context){
 
   return BlocProvider(
-    create:(_)=>TodoBloc(IntialState(),taskManager: TaskManager()),
+    create:(_)=> sl<TodoBloc>(),
     child: BlocBuilder<TodoBloc,TodoState>(
       builder: (context,state){
         return Container(
@@ -333,9 +334,11 @@ BlocProvider<TodoBloc> buildButton(BuildContext context){
 
               if(isvalid){
                 BlocProvider.of<TodoBloc>(context).add(CreateTaskEvent(title: taskname_controller.text, description: description_controller.text, due_date: taskdate_controller.text, status: 'pending', id: 0));
-                //await TaskManager().CreateTask(taskname_controller.text, description_controller.text, taskdate_controller.text, 'pending');
-                // BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
-                Navigator.pop(context,'added');
+
+                BlocProvider.of<TodoBloc>(context).add(LoadAllTasksEvent());
+                Navigator.pop(context);
+
+
               }
               taskname_controller.clear();
               taskdate_controller.clear();

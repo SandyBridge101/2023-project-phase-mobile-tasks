@@ -19,10 +19,10 @@ import './bloc.dart';
 
 class TodoBloc extends Bloc<TodoEvent,TodoState>{
   ViewAllTasks viewAllTasks=ViewAllTasks(TaskManager());
-  ViewTask? viewTask;
+  ViewTask viewTask=ViewTask(TaskManager());
   CreateTask createTask=CreateTask(TaskManager());
-  EditTask? editTask;
-  DeleteTask? deleteTask;
+  EditTask editTask=EditTask(TaskManager());
+  DeleteTask deleteTask=DeleteTask(TaskManager());
   final TaskManager taskManager;
 
   /*TodoBloc({required ViewAllTasks viewall,
@@ -50,8 +50,13 @@ class TodoBloc extends Bloc<TodoEvent,TodoState>{
       try{
         var k=event.due_date;
         print('Event date $k');
-        await createTask(Task(event.id,event.title,event.description,DateFormat.yMMMd().parse(event.due_date), event.status));
-        yield LoadingState();
+        //return list
+        //yeild loaded task state
+        final Either<String,List> tasks=await createTask(Task(event.id,event.title,event.description,DateFormat.yMMMd().parse(event.due_date), event.status));
+        yield tasks.fold(
+                (error) => ErrorState(),
+                (task_list) => LoadedAllTasksState(tasks: task_list));
+
       }
       catch(e){
         yield ErrorState();
@@ -60,16 +65,12 @@ class TodoBloc extends Bloc<TodoEvent,TodoState>{
     else if(event is LoadAllTasksEvent){
       try{
         final Either<String,List> tasks=await viewAllTasks(NoParams());
-
-        print('executing thus...');
-        print(tasks);
-
         yield tasks.fold(
                 (error) => ErrorState(),
                 (task_list) => LoadedAllTasksState(tasks: task_list));
 
       }catch(e){
-        LoadingState();
+        ErrorState();
       }
 
     }
@@ -86,8 +87,11 @@ class TodoBloc extends Bloc<TodoEvent,TodoState>{
       yield LoadingState();
 
       try{
-        await editTask!(Task(event.id, event.title, event.description, event.due_date, event.status));
+        final result=await editTask(Task(event.id, event.title, event.description, DateFormat.yMMMd().parse(event.due_date), event.status));
         //yield LoadedAllTasksState();
+        result.fold(
+                (l) => ErrorState(),
+                (tasks) =>  LoadedAllTasksState(tasks: tasks));
       }catch(e){
         yield ErrorState();
       }
@@ -97,9 +101,13 @@ class TodoBloc extends Bloc<TodoEvent,TodoState>{
     else if (event is DeleteTaskEvent){
       try{
         //yield LoadedAllTasksState();
-        await deleteTask!(event.index);
+        final result=await deleteTask(event.index);
+        result.fold(
+                (l) => ErrorState(),
+                (tasks) =>  LoadedAllTasksState(tasks: tasks));
+
       }catch(e){
-        ErrorState();
+        yield ErrorState();
       }
     }
 

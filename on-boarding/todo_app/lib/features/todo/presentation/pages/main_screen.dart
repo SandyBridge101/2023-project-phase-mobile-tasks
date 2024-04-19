@@ -6,6 +6,8 @@ import 'package:todo_app/features/todo/presentation/bloc/todo_event.dart';
 import 'package:todo_app/features/todo/presentation/bloc/todo_bloc.dart';
 import 'package:todo_app/core/util/task_manager.dart';
 
+import 'package:todo_app/injection_container.dart';
+
 class MainScreen extends StatelessWidget{
   const MainScreen({super.key});
 
@@ -22,10 +24,10 @@ class MainScreen extends StatelessWidget{
 BlocProvider<TodoBloc> buildBody(BuildContext context){
 
   return BlocProvider(
-    create:(_)=>TodoBloc(IntialState(),taskManager: TaskManager()),
+    create:(_)=> sl<TodoBloc>(),
     child: BlocBuilder<TodoBloc,TodoState>(
       builder: (context,state){
-        if(state is IntialState){
+
           return Center(
             child: Container(
               child: Column(
@@ -64,10 +66,7 @@ BlocProvider<TodoBloc> buildBody(BuildContext context){
               ),
             ),
           );
-        }
-        else{
-          return Text('Error');
-        }
+
       },
     ),
   );

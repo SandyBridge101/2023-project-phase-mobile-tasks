@@ -1,6 +1,14 @@
+import 'package:dartz/dartz.dart' hide Task;
+import 'package:todo_app/core/use_case/use_case.dart';
+import 'package:todo_app/core/util/task_manager.dart';
+import 'package:todo_app/features/todo/domain/usecases/view_all_tasks.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
-class TodoState {
-
+@immutable
+class TodoState extends Equatable{
+  @override
+  List<Object> get props => [];
 }
 
 class IntialState extends TodoState{
@@ -16,10 +24,12 @@ class LoadingState extends TodoState{
 }
 
 class LoadedAllTasksState extends TodoState{
-  final List tasks;
+  List tasks;
   LoadedAllTasksState({required this.tasks}){
     print('loaded all tasks state....');
+
   }
+
 }
 
 class LoadedSingleTaskState extends TodoState{
